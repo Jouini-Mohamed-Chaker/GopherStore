@@ -7,14 +7,15 @@ type Store struct {
 	data map[string][]byte
 }
 
-func NewStore() Store {
-	return Store{data: make(map[string][]byte)}
+func NewStore() *Store {
+	return &Store{data: make(map[string][]byte)}
 }
 
-func (s *Store) Set(key string, value []byte) {
+func (s *Store) Set(key string, value []byte) ([]byte, bool) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.data[key] = value
+	return []byte{}, true
 }
 
 func (s *Store) Get(key string) ([]byte, bool) {
@@ -24,10 +25,10 @@ func (s *Store) Get(key string) ([]byte, bool) {
 	return val, ok
 }
 
-func (s *Store) Delete(key string) bool {
+func (s *Store) Delete(key string) ([]byte, bool) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	_, exists := s.data[key]
 	delete(s.data, key)
-	return exists
+	return []byte{}, exists
 }

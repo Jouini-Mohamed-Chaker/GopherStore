@@ -8,8 +8,6 @@ import (
 const PORT = ":3000"
 
 func main() {
-	var _ = NewStore()
-
 	listener, err := net.Listen("tcp", PORT)
 	if err != nil {
 		log.Fatalln(err)
@@ -22,6 +20,7 @@ func main() {
 	}(listener)
 	log.Println("GoStore started on port ", PORT)
 
+	var store = NewStore()
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
@@ -29,6 +28,6 @@ func main() {
 			continue
 		}
 
-		go handleConnection(conn)
+		go HandleConnection(store, conn)
 	}
 }
