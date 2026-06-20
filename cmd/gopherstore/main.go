@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net"
+
+	"github.com/Jouini-Mohamed-Chaker/GopherStore/internal/store"
 )
 
 const PORT = ":3000"
@@ -20,7 +22,7 @@ func main() {
 	}(listener)
 	log.Println("GoStore started on port ", PORT)
 
-	var store = NewStore()
+	var inMemoryStore = store.NewStore()
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
@@ -28,6 +30,6 @@ func main() {
 			continue
 		}
 
-		go HandleConnection(store, conn)
+		go store.HandleConnection(inMemoryStore, conn)
 	}
 }

@@ -1,3 +1,3 @@
-module GopherStore
+module github.com/Jouini-Mohamed-Chaker/GopherStore
 
-go 1.26
+go 1.26.4
